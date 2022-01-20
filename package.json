@@ -20,6 +20,8 @@
     "web-vitals": "^2.1.3"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "dev": "react-scripts start --development",
     "build": "react-scripts build",
@@ -44,5 +46,13 @@
       "last 1 safari version",
       "ie 10"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
+  },
+  "homepage": "https://hoyangtsai.github.io/todo-client",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoyangtsai/todo-client.git"
   }
 }
