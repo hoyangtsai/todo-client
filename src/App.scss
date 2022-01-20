@@ -1,0 +1,19 @@
+@import './variables.scss';
+
+body {
+  background-color: #282c34;
+}
+
+.App {
+  color: #ccc;
+  padding: 0 6em;
+}
+
+.App-header {
+  font-size: calc(10px + 2vmin);
+  color: $primary-color;
+}
+
+.App-link {
+  color: $secondary-color;
+}

@@ -1,0 +1,94 @@
+.todoList {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+}
+
+.todoItem {
+    display: flex;
+    align-items: center;
+
+    &.isDone .todoName {
+        text-decoration: line-through;
+    }
+}
+
+.todoItem + .todoItem {
+    margin-top: 12px;
+}
+
+.todoName { 
+    flex: 0 300px;
+    margin-right: 12px;
+}
+
+.todoNameInput {
+    flex: 0 290px;
+    margin-right: 12px;
+}
+
+.todoCtrl {
+    margin-left: 20px;
+}
+
+.todoCheck {
+    margin: 0 8px 0 0;
+}
+
+.todoFilter {
+    margin-top: 20px;
+}
+
+.todoFilter__title {
+    display: inline-block;
+    margin-right: 12px;
+}
+
+.todoFilter__linkButton {
+    background: none;
+    border: none;
+    padding: 0;
+    color: rgb(80, 80, 255);
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 16px;
+    user-select: none;
+
+    & + .todoFilter__linkButton  {
+        margin-left: 10px;
+    }
+
+    &.isSelect {
+        text-decoration: none;
+        color: #FFF;
+        pointer-events: none;
+        cursor: default;
+    }
+}
+
+.todoWeight {
+    flex: 0 0 78px;
+}
+
+// .todoWeight__select {
+//     width: 100px;
+//     option {
+//         width: 100px;
+//     }
+// }
+
+.todoSort {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+
+    &__title {
+        margin-right: 20px;
+    }
+
+    &__button {
+        & + & {
+            margin-left: 12px;
+        }
+    }
+}
