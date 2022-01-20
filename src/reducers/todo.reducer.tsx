@@ -24,11 +24,13 @@ const todoReducer = (todos: ITodo[], action: TodoAction) => {
     case 'SORT_RESET':
       return action.payload.todos;  
     case 'SORT_DESC':
-      const descTodo = action.payload.todos.slice();
-      return descTodo.sort((a, b) => b.weight - a.weight);;
+      return action.payload.todos;  
+      // const descTodo = action.payload.todos.slice();
+      // return descTodo.sort((a, b) => b.weight - a.weight);
     case 'SORT_ASC':
-      const ascTodo = action.payload.todos.slice();
-      return ascTodo.sort((a, b) => a.weight - b.weight);
+      return action.payload.todos;  
+      // const ascTodo = action.payload.todos.slice();
+      // return ascTodo.sort((a, b) => a.weight - b.weight);
     default:
       return todos;
   }

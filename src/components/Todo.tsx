@@ -16,19 +16,36 @@ const Todo = () => {
 
   const [todos, dispatch] = useReducer(todoReducer, []);
   const [visible, setVisible] = useState('all');
-  const [sorting, setSorting] = useState('');
+  const [sort, setSort] = useState('');
   // const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    axios.get(`//${TODO_API_URL}/all`)
-      .then((response) => {
-        const { data, status } = response;
-        if (status === 200) {
-          dispatch({ type: 'INIT_TODO', payload: { todos: data }});
-          setOriginTodos(data);
-        }
-      });
+    const init = async () => {
+      const todos = await getTodos();
+      dispatch({ type: 'INIT_TODO', payload: { todos } });
+      setOriginTodos(todos);
+    }
+    init();
   }, []);
+
+  const getTodos = async (params: any = {}) => {
+    let qs = '';
+    if (Object.keys(params).length > 0) {
+      // convert objec to a query string
+      qs = Object.keys(params)
+        .map(key => `${key}=${params[key]}`)
+        .join('&');
+    }
+    try {
+      const res = await axios.get(`//${TODO_API_URL}/all?${qs}`);
+      const { data, status } = res;
+      if (status === 200) {
+        return data;
+      }
+    } catch (err) {
+      console.log('get todos error =>', err);
+    }
+  }
 
   const updateTodo = async (todo: ITodo) => {
     if (todo.id) {
@@ -130,11 +147,11 @@ const Todo = () => {
     }
   }, [dispatch])
 
-  const handleSorting = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (sorting === '' || sorting === 'desc') {
-      setSorting('asc')
-    } else if (sorting === 'asc') {
-      setSorting('desc')
+  const handleSort = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (sort === '' || sort === 'asc') {
+      setSort('desc')
+    } else if (sort === 'desc') {
+      setSort('asc')
     }
   }
 
@@ -146,17 +163,57 @@ const Todo = () => {
     } else if (visible.toLowerCase() === 'completed') {
       dispatch({ type: 'SHOW_COMPLETED', payload: { todos: originTodos }});
     }
-  }, [visible]);
+  }, [visible, originTodos]);
 
   useEffect(() => {
-    if (sorting === '') {
-      dispatch({ type: 'SORT_RESET', payload: { todos: originTodos }});
-    } else if (sorting === 'asc') {
-      dispatch({ type: 'SORT_DESC', payload: { todos } });
-    } else if (sorting === 'desc') {
-      dispatch({ type: 'SORT_ASC', payload: { todos }});
+    const setTodoSort = async (sort = '') => {
+      if (sort === '') {
+        // dispatch({ type: 'SORT_RESET', payload: { todos: originTodos }});
+        const todos = await getTodos();
+        dispatch({ type: 'SORT_RESET', payload: { todos } });
+        setOriginTodos(todos);
+      } else if (sort === 'asc') {
+        // dispatch({ type: 'SORT_DESC', payload: { todos } });
+        const todos = await getTodos({ sort });
+        dispatch({ type: 'SORT_DESC', payload: { todos } });
+      } else if (sort === 'desc') {
+        // dispatch({ type: 'SORT_ASC', payload: { todos } });
+        const todos = await getTodos({ sort });
+        dispatch({ type: 'SORT_ASC', payload: { todos } });
+      }
     }
-  }, [sorting]);
+
+    setTodoSort(sort);
+  }, [sort]);
+
+
+  const getListItem = (t: ITodo, index: number) => {
+    if (visible === 'active' && t.done) return;
+    if (visible === 'completed' && !t.done) return;
+    return (
+      <li className={clsx(styles.todoItem, { [styles.isDone]: t.done, [styles.isEdit]: t.isEdit })} key={t.id}>
+        <input type="checkbox" title="toggle-done"
+          className={styles.todoCheck} checked={t.done}
+          onChange={(e) => handleDone(e, t, index)} />
+        {t.isEdit ?
+          <input className={styles.todoNameInput} title="todo-name" type="text"
+            value={t.name}
+            onChange={e => handleTodoNameChange(e, t, index)}
+            onBlur={e => handleTodoEditDone(t, index)}
+            onKeyUp={e => handleTodoNameKeyup(e, t, index)} /> :
+          <span className={styles.todoName}>{t.name}</span>
+        }
+        {t.isEdit ?
+          <TodoWeight className={styles.todoWeight__select} weight={t.weight} onWeightChange={(w: number) => handleEditWeight(w, t, index)} /> :
+          <span className={styles.todoWeight}>{t.weight}</span>
+        }
+        <span className={styles.todoCtrl}>
+          <button className="todoEdit" onClick={(e) => clickEdit(e, t, index)}>✏️</button>
+          <button className="todoDel" onClick={(e) => clickDelete(e, t)}>🗑</button>
+        </span>
+      </li> 
+    )
+  }
 
   return (
     <div>
@@ -169,33 +226,15 @@ const Todo = () => {
       </div>
       <div className={styles.todoSort}>
         <span className={styles.todoSort__title}>Sort:</span>
-        <button className={styles.todoSort__button} onClick={handleSorting}>{sorting === '' ? 'Click to sort' : sorting}</button>
-        <button className={styles.todoSort__button} onClick={e => setSorting('')}>Reset</button>
+        <button className={styles.todoSort__button} onClick={handleSort}>
+          {sort === '' ? 
+              'Click to sort' :
+              (sort === 'desc' ? 'Ascending' : 'Descending')}
+        </button>
+        <button className={styles.todoSort__button} onClick={e => setSort('')}>Reset</button>
       </div>
       <ul className={styles.todoList}>
-        {todos.map((t: ITodo, index: number) => (
-          <li className={clsx(styles.todoItem, { [styles.isDone]: t.done, [styles.isEdit]: t.isEdit })} key={t.id}>
-            <input type="checkbox" title="toggle-done"
-              className={styles.todoCheck} checked={t.done}
-              onChange={(e) => handleDone(e, t, index)} />
-            { t.isEdit ?
-              <input className={styles.todoNameInput} title="todo-name" type="text"
-                value={t.name}
-                onChange={e => handleTodoNameChange(e, t, index)} 
-                onBlur={e => handleTodoEditDone(t, index)}
-                onKeyUp={e => handleTodoNameKeyup(e, t, index)} /> :
-              <span className={ styles.todoName }>{t.name}</span>
-            }
-            { t.isEdit ?
-              <TodoWeight className={styles.todoWeight__select} weight={t.weight} onWeightChange={(w: number) => handleEditWeight(w, t, index)} /> :
-              <span className={styles.todoWeight}>{t.weight}</span>
-            }
-            <span className={ styles.todoCtrl }>
-              <button className="todoEdit" onClick={(e) => clickEdit(e, t, index)}>✏️</button>
-              <button className="todoDel" onClick={(e) => clickDelete(e, t)}>🗑</button>
-            </span>
-          </li>
-        ))}
+        {todos.map((t: ITodo, index: number) => getListItem(t, index))}
       </ul>
     </div>
   )
