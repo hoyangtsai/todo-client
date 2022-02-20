@@ -7,9 +7,10 @@ import styles from './Todo.module.scss';
 import clsx from 'clsx';
 import TodoWeight from './TodoWeight';
 
-const { REACT_APP_API_HOST, REACT_APP_API_TODO } = process.env;
+// const { REACT_APP_API_HOST, REACT_APP_API_TODO } = process.env;
 
-const TODO_API_URL = `${REACT_APP_API_HOST}/${REACT_APP_API_TODO}`;
+// const TODO_API_URL = `${REACT_APP_API_HOST}/${REACT_APP_API_TODO}`;
+const TODO_API_URL = `//todo-services.azurewebsites.net/todo`;
 
 const Todo = () => {
   const [originTodos, setOriginTodos] = useState<ITodo[]>([]);

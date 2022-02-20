@@ -33,9 +33,6 @@ jobs:
 
       - run: yarn install --frozen-lockfile
       - run: yarn build
-        env:
-          REACT_APP_API_HOST: ${{ secrets.REACT_APP_API_HOST }}
-          REACT_APP_API_TODO: ${{ secrets.REACT_APP_API_TODO }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
