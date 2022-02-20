@@ -53,5 +53,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoyangtsai/todo-client.git"
-  }
+  },
+  "license": "ISC"
 }
