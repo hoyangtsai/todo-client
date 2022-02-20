@@ -19,14 +19,14 @@ const Todo = () => {
   const [sort, setSort] = useState('');
   // const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const init = async () => {
-      const todos = await getTodos();
-      dispatch({ type: 'INIT_TODO', payload: { todos } });
-      setOriginTodos(todos);
-    }
-    init();
-  }, []);
+  // useEffect(() => {
+  //   const init = async () => {
+  //     const todos = await getTodos();
+  //     dispatch({ type: 'INIT_TODO', payload: { todos } });
+  //     setOriginTodos(todos);
+  //   }
+  //   init();
+  // }, []);
 
   const getTodos = async (params: any = {}) => {
     let qs = '';

@@ -3,8 +3,6 @@ import { ITodo, TodoAction } from '../interfaces/todo.interface';
 
 const todoReducer = (todos: ITodo[], action: TodoAction) => {
   switch (action.type) {
-    case 'INIT_TODO':
-      return action.payload.todos;
     case 'ADD_TODO':
       return [...todos, action.payload.todo];
     case 'DELETE_TODO':
@@ -27,6 +25,7 @@ const todoReducer = (todos: ITodo[], action: TodoAction) => {
       return action.payload.todos;  
       // const descTodo = action.payload.todos.slice();
       // return descTodo.sort((a, b) => b.weight - a.weight);
+    case 'INIT_TODO':
     case 'SORT_ASC':
       return action.payload.todos;  
       // const ascTodo = action.payload.todos.slice();
