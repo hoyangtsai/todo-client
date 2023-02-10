@@ -31,8 +31,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
+      - name: Use variables
+        run: |
+          echo "api_host variable : ${{ vars.REACT_APP_API_HOST }}"
+          echo "api_todo variable : ${{ vars.REACT_APP_API_TODO }}"
+
+      - name: Build
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
+        env:
+          REACT_APP_API_HOST: ${{ vars.REACT_APP_API_HOST }}
+          REACT_APP_API_TODO: ${{ vars.REACT_APP_API_TODO }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
