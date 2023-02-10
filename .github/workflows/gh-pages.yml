@@ -12,8 +12,8 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     env:
-      REACT_APP_API_HOST: https://ntp.ksys.one
-      REACT_APP_API_TODO: todo-service/todo
+      REACT_APP_API_HOST: ${{ vars.REACT_APP_API_HOST }}
+      REACT_APP_API_TODO: ${{ vars.REACT_APP_API_TODO }}
     steps:
       - uses: actions/checkout@v2
 
@@ -36,10 +36,8 @@ jobs:
 
       - name: Use variables
         run: |
-          echo "api_host variable : ${{ vars.REACT_APP_API_HOST }}"
-          echo "api_todo variable : ${{ vars.REACT_APP_API_TODO }}"
-          echo "env.REACT_APP_API_HOST : ${{ env.REACT_APP_API_HOST }}"
-          echo "env.REACT_APP_API_TODO : ${{ env.REACT_APP_API_TODO }}"
+          echo "REACT_APP_API_HOST variable : ${{ env.REACT_APP_API_HOST }}"
+          echo "REACT_APP_API_TODO variable : ${{ env.REACT_APP_API_TODO }}"
 
       - name: Build
         run: |
