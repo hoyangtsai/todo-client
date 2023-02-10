@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-20.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
+    env:
+      REACT_APP_API_HOST: https://ntp.ksys.one
+      REACT_APP_API_TODO: todo-service/todo
     steps:
       - uses: actions/checkout@v2
 
@@ -35,14 +38,13 @@ jobs:
         run: |
           echo "api_host variable : ${{ vars.REACT_APP_API_HOST }}"
           echo "api_todo variable : ${{ vars.REACT_APP_API_TODO }}"
+          echo "process.env.REACT_APP_API_HOST : ${{ process.env.REACT_APP_API_HOST }}"
+          echo "process.env.REACT_APP_API_TODO : ${{ process.env.REACT_APP_API_TODO }}"
 
       - name: Build
         run: |
           yarn install --frozen-lockfile
           yarn build
-        env:
-          REACT_APP_API_HOST: ${{ vars.REACT_APP_API_HOST }}
-          REACT_APP_API_TODO: ${{ vars.REACT_APP_API_TODO }}
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
