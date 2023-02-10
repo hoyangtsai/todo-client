@@ -7,10 +7,9 @@ import styles from './Todo.module.scss';
 import clsx from 'clsx';
 import TodoWeight from './TodoWeight';
 
-// const { REACT_APP_API_HOST, REACT_APP_API_TODO } = process.env;
+const { REACT_APP_API_HOST, REACT_APP_API_TODO } = process.env;
 
-// const TODO_API_URL = `${REACT_APP_API_HOST}/${REACT_APP_API_TODO}`;
-const TODO_API_URL = `//todo-services.azurewebsites.net/todo`;
+const TODO_API_URL = `${REACT_APP_API_HOST}/${REACT_APP_API_TODO}`;
 
 const Todo = () => {
   const [originTodos, setOriginTodos] = useState<ITodo[]>([]);
@@ -38,7 +37,7 @@ const Todo = () => {
         .join('&');
     }
     try {
-      const res = await axios.get(`//${TODO_API_URL}/all?${qs}`);
+      const res = await axios.get(`${TODO_API_URL}/all?${qs}`);
       const { data, status } = res;
       if (status === 200) {
         return data;
@@ -51,7 +50,7 @@ const Todo = () => {
   const updateTodo = async (todo: ITodo) => {
     if (todo.id) {
       try {
-        const res = await axios.put(`//${TODO_API_URL}/${todo.id}`, todo);
+        const res = await axios.put(`${TODO_API_URL}/${todo.id}`, todo);
         return res;
       } catch (err) {
         if (err instanceof Error) {
@@ -89,7 +88,7 @@ const Todo = () => {
   const clickDelete = async (e: React.MouseEvent<HTMLButtonElement>, todo: ITodo) => {
     if (todo.id) {
       try {
-        const res = await axios.delete(`//${TODO_API_URL}/${todo.id}`);
+        const res = await axios.delete(`${TODO_API_URL}/${todo.id}`);
         const { id } = res.data;
         dispatch({ type: 'DELETE_TODO', payload: { id } });
         setOriginTodos((prevSate) => prevSate.filter((prev) => prev.id !== id));

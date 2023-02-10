@@ -3,10 +3,9 @@ import axios from 'axios';
 import TodoWeight from './TodoWeight';
 import styles from './AddTodo.module.scss';
 
-// const { REACT_APP_API_HOST, REACT_APP_API_TODO } = process.env;
+const { REACT_APP_API_HOST, REACT_APP_API_TODO } = process.env;
 
-// const TODO_API_URL = `${REACT_APP_API_HOST}/${REACT_APP_API_TODO}`;
-const TODO_API_URL = `//todo-services.azurewebsites.net/todo`;
+const TODO_API_URL = `${REACT_APP_API_HOST}/${REACT_APP_API_TODO}`;
 
 interface AddTodoProps {
   onNewTodo: Function;
@@ -21,7 +20,7 @@ const AddTodo: React.FC<AddTodoProps> = ({ onNewTodo }) => {
     e.preventDefault();
     const newTodo = { name, done: false, weight };
     try {
-      const res = await axios.post(`//${TODO_API_URL}/add`, newTodo);
+      const res = await axios.post(`${TODO_API_URL}/add`, newTodo);
       const { data, status } = res;
       if (status === 200) {
         onNewTodo(data);
