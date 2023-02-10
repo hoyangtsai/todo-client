@@ -38,8 +38,8 @@ jobs:
         run: |
           echo "api_host variable : ${{ vars.REACT_APP_API_HOST }}"
           echo "api_todo variable : ${{ vars.REACT_APP_API_TODO }}"
-          echo "process.env.REACT_APP_API_HOST : ${{ process.env.REACT_APP_API_HOST }}"
-          echo "process.env.REACT_APP_API_TODO : ${{ process.env.REACT_APP_API_TODO }}"
+          echo "env.REACT_APP_API_HOST : ${{ env.REACT_APP_API_HOST }}"
+          echo "env.REACT_APP_API_TODO : ${{ env.REACT_APP_API_TODO }}"
 
       - name: Build
         run: |
