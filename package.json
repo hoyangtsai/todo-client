@@ -52,7 +52,7 @@
   "resolutions": {
     "**/nth-check": ">=2.0.1"
   },
-  "homepage": "https://hoyangtsai.github.io/todo-client",
+  "homepage": "/todo-client",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hoyangtsai/todo-client.git"
