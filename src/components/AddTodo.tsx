@@ -6,7 +6,6 @@ import styles from './AddTodo.module.scss';
 const { REACT_APP_API_HOST, REACT_APP_API_TODO } = process.env;
 
 const TODO_API_URL = `${REACT_APP_API_HOST}/${REACT_APP_API_TODO}`;
-
 interface AddTodoProps {
   onNewTodo: Function;
 }
